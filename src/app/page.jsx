@@ -1,6 +1,10 @@
+import { Button } from "@nextui-org/react"
+
 const Page = () => {
   return (
-    <div></div>
+    <div>
+      <Button>yes</Button>
+    </div>
   )
 }
 
