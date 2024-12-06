@@ -3,6 +3,7 @@
 import { Button, Image } from "@nextui-org/react"
 import { HandWaving, House, Info } from "@phosphor-icons/react"
 import { usePathname } from "next/navigation"
+import { HoverBorderGradient } from "../ui/hover-border-gradient"
 
 const Navbar = () => {
     const pathname = usePathname()
@@ -21,7 +22,13 @@ const Navbar = () => {
                 <Info color="#333333" size={32} weight={pathname.endsWith("/about") ? "fill" : "thin"} />
             </div>
             <div>
-                <Button className="text-[#333333] font-acorn text-3xl" variant="light">Login</Button>
+                <HoverBorderGradient
+                    containerClassName="rounded-full"
+                    as="button"
+                    className="bg-blue-50 text-[#333333] flex items-center space-x-2 shadow-lg"
+                >
+                    <span className="text-[#333333] font-acorn text-lg px-3" variant="light">Login</span>
+                </HoverBorderGradient>
             </div>
         </div>
     )
