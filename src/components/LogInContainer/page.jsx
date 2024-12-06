@@ -43,7 +43,7 @@ export function LogInContainer() {
                 Cookies.set("token", data.body, { expires: 7 });
 
                 toast.success("Login success!");
-                router.push("/predict")
+                location.replace("/predict")
             } else if (res.status === 404) {
                 toast.error("Email not found, please register!");
             } else if (res.status === 401) {
