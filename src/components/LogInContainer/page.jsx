@@ -8,9 +8,10 @@ import {
 } from "@tabler/icons-react";
 import { BASE_API } from "@/utilities/environment";
 import { toast } from "sonner";
+import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 
-export function SignUpContainer() {
+export function LogInContainer() {
     const router = useRouter()
 
     const handleSubmit = async (e) => {
@@ -19,17 +20,14 @@ export function SignUpContainer() {
         const formData = new FormData(e.target);
 
         const inputData = {
-            first_name: formData.get("firstname"),
-            last_name: formData.get("lastname"),
             email: formData.get("email"),
             password: formData.get("password"),
-            confirmation_password: formData.get("twitterpassword"),
         };
 
         if (!formValidation(inputData)) return;
 
         try {
-            const res = await fetch(BASE_API + "/auth/register", {
+            const res = await fetch(BASE_API + "/auth/login", {
                 method: "POST",
                 body: JSON.stringify(inputData),
                 headers: {
@@ -39,10 +37,18 @@ export function SignUpContainer() {
             });
 
             if (res.ok) {
-                toast.success("Register success!");
-                router.push("/auth/login");
-            } else if (res.status === 409) {
-                toast.error("Email already registered!");
+                const data = await res.json()
+                Cookies.remove("token");
+                Cookies.set("token", data.body, { expires: 7 });
+
+                toast.success("Login success!");
+                router.push("/predict")
+            } else if (res.status === 404) {
+                toast.error("Email not found, please register!");
+            } else if (res.status === 401) {
+                toast.error("Invalid Email or Password!");
+            } else if (res.status === 403) {
+                toast.error("Please Log In using Google!");
             } else {
                 toast.error("Something went wrong!");
             }
@@ -52,20 +58,15 @@ export function SignUpContainer() {
     };
 
     const formValidation = (data) => {
-        const { first_name, last_name, email, password, confirmation_password } = data;
+        const { email, password } = data;
 
-        if (!first_name || !last_name || !email || !password || !confirmation_password) {
+        if ( !email || !password ) {
             toast.error("All fields are required!");
             return false;
         }
 
         if (password.length < 8 ) {
             toast.error("Password must be at least 8 characters!");
-            return false;
-        }
-
-        if (password !== confirmation_password) {
-            toast.error("Passwords do not match!");
             return false;
         }
 
@@ -76,23 +77,12 @@ export function SignUpContainer() {
         (<div
             className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 text-333 bg-transparent">
             <h2 className="font-bold text-xl text-333 ">
-                Welcome to Genggam Makna
+                Log In to Genggam Makna
             </h2>
             <p className="text-neutral-600 text-sm max-w-sm mt-2">
-                While our login feature is still in the works, you can register now and start exploring the possibilities with Genggam Makna.
+                While our login feature is still in the works, you can login now and start exploring the possibilities with Genggam Makna.
             </p>
             <form className="my-8" onSubmit={handleSubmit}>
-                <div
-                    className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
-                    <LabelInputContainer>
-                        <Label htmlFor="firstname">First name</Label>
-                        <Input id="firstname" name="firstname" placeholder="Tyler" type="text" />
-                    </LabelInputContainer>
-                    <LabelInputContainer>
-                        <Label htmlFor="lastname">Last name</Label>
-                        <Input id="lastname" name="lastname" placeholder="Durden" type="text" />
-                    </LabelInputContainer>
-                </div>
                 <LabelInputContainer className="mb-4">
                     <Label htmlFor="email">Email Address</Label>
                     <Input id="email" name="email" placeholder="projectmayhem@fc.com" type="email" />
@@ -102,16 +92,11 @@ export function SignUpContainer() {
                     <Input id="password" name="password" placeholder="••••••••" type="password" />
                     <p className="text-xs">*Password must be at least 8 characters</p>
                 </LabelInputContainer>
-                <LabelInputContainer className="mb-8">
-                    <Label htmlFor="twitterpassword">Confirmation password</Label>
-                    <Input id="twitterpassword" name="twitterpassword" placeholder="••••••••" type="password" />
-                    <p className="text-xs">*Passwords must be match</p>
-                </LabelInputContainer>
 
                 <button
                     className="bg-gradient-to-br relative group/btn from-333 dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
                     type="submit">
-                    Sign up &rarr;
+                    Log In &rarr;
                     <BottomGradient />
                 </button>
 
