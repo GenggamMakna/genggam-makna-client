@@ -1,5 +1,5 @@
 import { HeroGrid } from "@/components/HeroGrid"
-import { LogInContainer } from "@/components/LogInContainer/page"
+import { LogInContainer } from "@/components/LogInContainer"
 
 const Page = () => {
     return (

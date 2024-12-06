@@ -1,8 +1,11 @@
 'use client'
 
+import { HeroGradientBackground } from "@/components/HeroGradientBackground"
+
 const Page = () => {
   return (
-    <div>
+    <div className="w-full">
+      <HeroGradientBackground/>
     </div>
   )
 }
