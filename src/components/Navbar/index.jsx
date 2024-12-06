@@ -25,7 +25,7 @@ const Navbar = () => {
                 <HoverBorderGradient
                     containerClassName="rounded-full"
                     as="button"
-                    className="bg-blue-50 text-[#333333] flex items-center space-x-2 shadow-lg"
+                    className="bg-blue-50 text-[#333333] flex items-center space-x-2 shadow-lg hover:scale-105 transition-all duration-400"
                 >
                     <span className="text-[#333333] font-acorn text-lg px-3" variant="light">Login</span>
                 </HoverBorderGradient>
