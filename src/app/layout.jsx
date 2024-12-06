@@ -18,7 +18,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${acorn.variable}`}>
+    <html lang="en" className={`${acorn.variable}`} suppressHydrationWarning>
       <body className={inter.className}>
         <Providers>
           <div className='bg-gradient-to-r from-blue-200 from-10% via-blue-50 via-50% to-blue-200 to-90% min-h-screen'>

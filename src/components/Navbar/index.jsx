@@ -4,10 +4,48 @@ import { Image } from "@nextui-org/react"
 import { HandWaving, House, Info } from "@phosphor-icons/react"
 import { usePathname, useRouter } from "next/navigation"
 import { HoverBorderGradient } from "../ui/hover-border-gradient"
+import { GetUserData } from "@/utilities/getUserData"
+import { useEffect, useState } from "react"
 
 const Navbar = () => {
     const pathname = usePathname()
     const router = useRouter()
+    const [userData, setUserData] = useState({})
+
+    useEffect(() => {
+        const user_data = GetUserData()
+        setUserData(user_data)
+    }, [])
+
+    const UserProfile = () => {
+        return (
+            <div className="flex flex-row items-center gap-4 text-333">
+                <div className="font-acorn text-xl">
+                    {userData?.first_name + " " + userData?.last_name}
+                </div>
+                <Image
+                    src="/images/default-avatar.jpg"
+                    isBlurred
+                    width={40}
+                    radius="full"
+                    alt="default avatar"
+                />
+            </div>
+        )
+    }
+
+    const LogInButton = () => {
+        return (
+            <HoverBorderGradient
+                containerClassName="rounded-full"
+                as="button"
+                onClick={() => router.push("/auth/login")}
+                className="bg-blue-50 text-[#333333] flex items-center space-x-2 shadow-lg hover:scale-105 transition-all duration-400"
+            >
+                <span className="text-[#333333] font-acorn text-lg px-3" variant="light">Login</span>
+            </HoverBorderGradient>
+        )
+    }
 
     return (
         <div className="flex flex-row justify-between items-center px-8 py-6">
@@ -23,14 +61,9 @@ const Navbar = () => {
                 <Info onClick={() => router.push("/about")} color="#333333" size={32} weight={pathname.endsWith("/about") ? "fill" : "thin"} className="hover:scale-105" />
             </div>
             <div>
-                <HoverBorderGradient
-                    containerClassName="rounded-full"
-                    as="button"
-                    onClick={() => router.push("/auth/login")}
-                    className="bg-blue-50 text-[#333333] flex items-center space-x-2 shadow-lg hover:scale-105 transition-all duration-400"
-                >
-                    <span className="text-[#333333] font-acorn text-lg px-3" variant="light">Login</span>
-                </HoverBorderGradient>
+                {
+                    userData.id ? (<UserProfile />) : (<LogInButton />)
+                }
             </div>
         </div>
     )
