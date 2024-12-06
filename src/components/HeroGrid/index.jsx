@@ -82,14 +82,14 @@ const cards = [
     content: <SkeletonTwo />,
     className: "col-span-1",
     thumbnail:
-      "/images/4003550.webp",
+      "/images/2458129.webp",
   },
   {
     id: 3,
     content: <SkeletonThree />,
     className: "col-span-1",
     thumbnail:
-      "/images/4003553.webp",
+      "/images/2458535.webp",
   },
   {
     id: 4,
