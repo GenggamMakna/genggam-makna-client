@@ -1,8 +1,7 @@
 'use client'
 
 import { HeroBeamsBackground } from "@/components/HeroBeamsBackground"
-import { motion } from "framer-motion";
-import { HeroHighlight, Highlight } from "@/components/ui/hero-highlight";
+import { Highlight } from "@/components/ui/hero-highlight";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient"
 import { GetUserData } from "@/utilities/getUserData"
 import { ArrowUpRight } from "@phosphor-icons/react"
