@@ -1,7 +1,11 @@
+import { HeroGrid } from "@/components/HeroGrid"
+
 const Page = () => {
   return (
     <div>
-      blablabla
+      <div className="h-[calc(100vh-_150px)] w-2/5">
+        <HeroGrid />
+      </div>
     </div>
   )
 }

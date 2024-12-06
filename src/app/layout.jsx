@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
         <Providers>
           <div className='bg-gradient-to-r from-blue-200 from-10% via-blue-50 via-50% to-blue-200 to-90% min-h-screen'>
             <Navbar />
-            <div className='rounded-t-4xl bg-white p-16 shadow-[0_-5px_60px_-15px_rgba(0,0,0,0.3)] h-[calc(100vh-_97px)] bg-gradient-to-br from-blue-100 from-10% via-blue-50 via-50% to-blue-100 to-90%'>
+            <div className='rounded-t-4xl bg-white p-8 shadow-[0_-5px_60px_-15px_rgba(0,0,0,0.3)] h-[calc(100vh-_97px)] bg-gradient-to-br from-blue-100 from-10% via-blue-50 via-50% to-blue-100 to-90%'>
               {children}
             </div>
           </div>
