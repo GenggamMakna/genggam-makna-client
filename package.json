@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@nextui-org/react": "^2.4.8",
+    "@phosphor-icons/react": "^2.1.7",
     "framer-motion": "^11.13.1",
     "jose": "^5.9.6",
     "js-cookie": "^3.0.5",
