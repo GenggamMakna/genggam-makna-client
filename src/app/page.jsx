@@ -1,11 +1,45 @@
 'use client'
 
-import { HeroGradientBackground } from "@/components/HeroGradientBackground"
+import { HeroBeamsBackground } from "@/components/HeroBeamsBackground"
+import { HoverBorderGradient } from "@/components/ui/hover-border-gradient"
+import { GetUserData } from "@/utilities/getUserData"
+import { ArrowUpRight } from "@phosphor-icons/react"
+import { useRouter } from "next/navigation"
 
 const Page = () => {
+  const router = useRouter()
+  const user_data = GetUserData()
+
   return (
     <div className="w-full">
-      <HeroGradientBackground/>
+      <HeroBeamsBackground>
+        <div className="mx-auto p-4 space-y-4">
+          <div className="max-w-2xl text-neutral-800">
+            <h1 className="font-acorn text-7xl">
+              Genggam Makna
+            </h1>
+            <h3 className="mt-3 text-sm ">
+              Genggam Makna is an AI-powered platform designed to bridge communication gaps by translating SIBI (Indonesian Sign Language) hand signs into the alphabet. Empowering accessibility and fostering inclusivity for a more connected world
+            </h3>
+          </div>
+          <HoverBorderGradient
+            containerClassName="rounded-full"
+            as="button"
+            onClick={() => {
+              if (user_data.id) {
+                router.push("/predict")
+              } else {
+                router.push("/auth/login")
+              }
+            }
+            }
+            className="bg-blue-50 text-[#333333] flex items-center space-x-2 shadow-lg hover:scale-105 transition-all duration-400"
+          >
+            <span className="text-[#333333] font-acorn text-lg px-3" variant="light">Try Now </span>
+            <ArrowUpRight size={24} />
+          </HoverBorderGradient>
+        </div>
+      </HeroBeamsBackground>
     </div>
   )
 }
