@@ -21,7 +21,7 @@ const Navbar = () => {
                 <Info color="#333333" size={32} weight={pathname.endsWith("/about") ? "fill" : "thin"} />
             </div>
             <div>
-                <Button className="bg-sky-600 text-white font-acorn" >Login</Button>
+                <Button className="text-[#333333] font-acorn text-3xl" variant="light">Login</Button>
             </div>
         </div>
     )
