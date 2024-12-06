@@ -10,6 +10,7 @@ import { BASE_API } from "@/utilities/environment";
 import { toast } from "sonner";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export function LogInContainer() {
     const router = useRouter()
@@ -60,12 +61,12 @@ export function LogInContainer() {
     const formValidation = (data) => {
         const { email, password } = data;
 
-        if ( !email || !password ) {
+        if (!email || !password) {
             toast.error("All fields are required!");
             return false;
         }
 
-        if (password.length < 8 ) {
+        if (password.length < 8) {
             toast.error("Password must be at least 8 characters!");
             return false;
         }
@@ -99,7 +100,15 @@ export function LogInContainer() {
                     Log In &rarr;
                     <BottomGradient />
                 </button>
-
+                <Link href={`/auth/register`} >
+                    <p className="text-sm hover:underline my-2">
+                        Doesn't have an account?
+                        <span className="font-semibold">
+                            {` `}Register here
+                        </span>
+                        !
+                    </p>
+                </Link>
                 <div
                     className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
 
