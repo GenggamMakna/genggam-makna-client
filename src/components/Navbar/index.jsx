@@ -18,9 +18,9 @@ const Navbar = () => {
                 alt="GenggamMakna logo"
             />
             <div className="flex flex-row items-center gap-6">
-                <House color="#333333" size={32} weight={pathname.endsWith("/") ? "fill" : "thin"} />
-                <HandWaving color="#333333" size={32} weight={pathname.endsWith("/predict") ? "fill" : "thin"} />
-                <Info color="#333333" size={32} weight={pathname.endsWith("/about") ? "fill" : "thin"} />
+                <House onClick={() => router.push("/")} color="#333333" size={32} weight={pathname.endsWith("/") ? "fill" : "thin"} className="hover:scale-105" />
+                <HandWaving onClick={() => router.push("/predict")} color="#333333" size={32} weight={pathname.endsWith("/predict") ? "fill" : "thin"} className="hover:scale-105" />
+                <Info onClick={() => router.push("/about")} color="#333333" size={32} weight={pathname.endsWith("/about") ? "fill" : "thin"} className="hover:scale-105" />
             </div>
             <div>
                 <HoverBorderGradient
