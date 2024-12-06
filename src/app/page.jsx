@@ -1,6 +1,8 @@
 'use client'
 
 import { HeroBeamsBackground } from "@/components/HeroBeamsBackground"
+import { motion } from "framer-motion";
+import { HeroHighlight, Highlight } from "@/components/ui/hero-highlight";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient"
 import { GetUserData } from "@/utilities/getUserData"
 import { ArrowUpRight } from "@phosphor-icons/react"
@@ -18,9 +20,19 @@ const Page = () => {
             <h1 className="font-acorn text-7xl">
               Genggam Makna
             </h1>
-            <h3 className="mt-3 text-sm ">
-              Genggam Makna is an AI-powered platform designed to bridge communication gaps by translating SIBI (Indonesian Sign Language) hand signs into the alphabet. Empowering accessibility and fostering inclusivity for a more connected world
-            </h3>
+            <div className="mt-3 text-sm ">
+
+              <h3>
+                Genggam Makna is an AI-powered platform designed to bridge communication gaps
+              </h3>
+              <Highlight className="text-black dark:text-white">
+                by translating SIBI (Indonesian Sign Language) hand signs into the alphabet.
+              </Highlight>
+              <h3>
+                Empowering accessibility and fostering inclusivity for a more connected world.
+              </h3>
+
+            </div>
           </div>
           <HoverBorderGradient
             containerClassName="rounded-full"
