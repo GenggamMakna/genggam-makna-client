@@ -1,20 +1,78 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";
 import {
     IconBrandGoogle,
 } from "@tabler/icons-react";
+import { BASE_API } from "@/utilities/environment";
+import { toast } from "sonner";
 
 export function SignUpContainer() {
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Form submitted");
+
+        const formData = new FormData(e.target);
+
+        const inputData = {
+            first_name: formData.get("firstname"),
+            last_name: formData.get("lastname"),
+            email: formData.get("email"),
+            password: formData.get("password"),
+            confirmation_password: formData.get("twitterpassword"),
+        };
+
+        console.log({ inputData })
+
+        if (!formValidation(inputData)) return;
+
+        try {
+            const res = await fetch(BASE_API + "/auth/register", {
+                method: "POST",
+                body: JSON.stringify(inputData),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                cache: "no-store",
+            });
+
+            if (res.ok) {
+                toast.success("Register success!");
+            } else if (res.status === 409) {
+                toast.error("Email already registered!");
+            } else {
+                toast.error("Something went wrong!");
+            }
+        } catch (err) {
+            toast.error("Client error!");
+        }
     };
+
+    const formValidation = (data) => {
+        const { first_name, last_name, email, password, confirmation_password } = data;
+
+        if (!first_name || !last_name || !email || !password || !confirmation_password) {
+            toast.error("All fields are required!");
+            return false;
+        }
+
+        if (password.length < 8 ) {
+            toast.error("Password must be at least 8 characters!");
+            return false;
+        }
+
+        if (password !== confirmation_password) {
+            toast.error("Passwords do not match!");
+            return false;
+        }
+
+        return true;
+    };
+
     return (
         (<div
-            className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input text-333 bg-white">
+            className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 text-333 bg-transparent">
             <h2 className="font-bold text-xl text-333 ">
                 Welcome to Genggam Makna
             </h2>
@@ -26,24 +84,26 @@ export function SignUpContainer() {
                     className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
                     <LabelInputContainer>
                         <Label htmlFor="firstname">First name</Label>
-                        <Input id="firstname" placeholder="Tyler" type="text" />
+                        <Input id="firstname" name="firstname" placeholder="Tyler" type="text" />
                     </LabelInputContainer>
                     <LabelInputContainer>
                         <Label htmlFor="lastname">Last name</Label>
-                        <Input id="lastname" placeholder="Durden" type="text" />
+                        <Input id="lastname" name="lastname" placeholder="Durden" type="text" />
                     </LabelInputContainer>
                 </div>
                 <LabelInputContainer className="mb-4">
                     <Label htmlFor="email">Email Address</Label>
-                    <Input id="email" placeholder="projectmayhem@fc.com" type="email" />
+                    <Input id="email" name="email" placeholder="projectmayhem@fc.com" type="email" />
                 </LabelInputContainer>
                 <LabelInputContainer className="mb-4">
                     <Label htmlFor="password">Password</Label>
-                    <Input id="password" placeholder="••••••••" type="password" />
+                    <Input id="password" name="password" placeholder="••••••••" type="password" />
+                    <p className="text-xs">*Password must be at least 8 characters</p>
                 </LabelInputContainer>
                 <LabelInputContainer className="mb-8">
-                    <Label htmlFor="twitterpassword">Your twitter password</Label>
-                    <Input id="twitterpassword" placeholder="••••••••" type="twitterpassword" />
+                    <Label htmlFor="twitterpassword">Confirmation password</Label>
+                    <Input id="twitterpassword" name="twitterpassword" placeholder="••••••••" type="twitterpassword" />
+                    <p className="text-xs">*Passwords must be match</p>
                 </LabelInputContainer>
 
                 <button
