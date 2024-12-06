@@ -1,11 +1,12 @@
 'use client'
 
-import { Image } from "@nextui-org/react"
+import { Image, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react"
 import { HandWaving, House, Info } from "@phosphor-icons/react"
 import { usePathname, useRouter } from "next/navigation"
 import { HoverBorderGradient } from "../ui/hover-border-gradient"
 import { GetUserData } from "@/utilities/getUserData"
 import { useEffect, useState } from "react"
+import Cookies from "js-cookie"
 
 const Navbar = () => {
     const pathname = usePathname()
@@ -17,20 +18,34 @@ const Navbar = () => {
         setUserData(user_data)
     }, [])
 
+    const handleLogOut = () => {
+        Cookies.remove('token')
+        location.replace("/")
+    }
+
     const UserProfile = () => {
         return (
-            <div className="flex flex-row items-center gap-4 text-333">
-                <div className="font-acorn text-xl">
-                    {userData?.first_name + " " + userData?.last_name}
-                </div>
-                <Image
-                    src="/images/default-avatar.jpg"
-                    isBlurred
-                    width={40}
-                    radius="full"
-                    alt="default avatar"
-                />
-            </div>
+            <Dropdown>
+                <DropdownTrigger>
+                    <div className="flex flex-row items-center gap-4 text-333 cursor-pointer">
+                        <div className="font-acorn text-xl">
+                            {userData?.first_name + " " + userData?.last_name}
+                        </div>
+                        <Image
+                            src="/images/default-avatar.jpg"
+                            isBlurred
+                            width={40}
+                            radius="full"
+                            alt="default avatar"
+                        />
+                    </div>
+                </DropdownTrigger>
+                <DropdownMenu aria-label="Static Actions">
+                    <DropdownItem key="logout" className="text-danger" color="danger" onClick={handleLogOut}>
+                        Log Out
+                    </DropdownItem>
+                </DropdownMenu>
+            </Dropdown>
         )
     }
 
