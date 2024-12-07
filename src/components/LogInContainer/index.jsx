@@ -54,7 +54,7 @@ export function LogInContainer() {
                 toast.error("Something went wrong!");
             }
         } catch (err) {
-            toast.error("Client error!");
+            toast.error("Connection error!");
         }
     };
 

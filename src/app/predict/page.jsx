@@ -31,10 +31,6 @@ const Page = () => {
         setUserData(user_data)
     }, [])
 
-    useEffect(() => {
-        console.log({ files })
-    }, [files])
-
     const handlePredict = async () => {
         if (!predictValidation()) {
             return
