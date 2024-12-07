@@ -8,12 +8,15 @@ import { GetUserData } from "@/utilities/getUserData";
 import { toast } from "sonner";
 import { Tabs } from "@/components/ui/tabs";
 import { ArrowUpRight } from "@phosphor-icons/react";
+import fetchWithAuth from "@/utilities/fetchWithAuth";
+import { BASE_API } from "@/utilities/environment";
 
 const Page = () => {
     const [userData, setUserData] = useState({})
+    const [currentType, setCurrentType] = useState("image")
+    const [files, setFiles] = useState([]);
     const router = useRouter()
 
-    const [files, setFiles] = useState([]);
     const handleFileUpload = (files) => {
         setFiles(files);
         console.log(files);
@@ -28,10 +31,49 @@ const Page = () => {
         setUserData(user_data)
     }, [])
 
+    useEffect(() => {
+        console.log({ files })
+    }, [files])
+
+    const handlePredict = async () => {
+        if (!predictValidation()) {
+            return
+        }
+
+        const formData = new FormData()
+        formData.append(currentType, files)
+
+        try {
+            const res = await fetchWithAuth(BASE_API + `/predict/${currentType}`, {
+                method: "POST",
+                body: formData,
+            })
+
+            if (res.ok) {
+                const data = await res.json()
+                console.log({ data })
+                toast.success("Prediction successful!")
+            } else {
+                toast.error("Something went wrong!")
+            }
+        } catch (err) {
+            toast.error("Connection error!")
+        }
+    }
+
+    const predictValidation = () => {
+        if (files.length === 0) {
+            toast.error("Please select a file to predict!")
+            return false
+        }
+
+        return true
+    }
+
     const tabs = [
         {
             title: "Image",
-            value: "Image",
+            value: "image",
             content: (
                 <div className="w-full overflow-hidden relative h-max rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-sky-300 to-blue-500">
                     <p className="font-acorn">Image Predict</p>
@@ -44,7 +86,7 @@ const Page = () => {
         },
         {
             title: "Video",
-            value: "Video",
+            value: "video",
             content: (
                 <div className="w-full overflow-hidden relative h-max rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-sky-300 to-blue-500">
                     <p className="font-acorn">Video Predict</p>
@@ -69,12 +111,13 @@ const Page = () => {
             </div>
             <div className="h-[20rem] md:h-[40rem] [perspective:1000px] relative b flex flex-col max-w-5xl mx-auto w-full mt-4 items-start justify-start">
                 <Tabs
+                    onChange={setCurrentType}
                     tabs={tabs}
                     predictButton={userData.id ? (
                         <HoverBorderGradient
                             containerClassName="rounded-full"
                             as="button"
-                            onClick={() => console.log("yes")}
+                            onClick={handlePredict}
                             className="bg-blue-50 text-[#333333] flex items-center space-x-2 shadow-lg hover:scale-105 transition-all duration-400"
                         >
                             <span className="text-[#333333] font-acorn text-lg px-3" variant="light">Predict </span>

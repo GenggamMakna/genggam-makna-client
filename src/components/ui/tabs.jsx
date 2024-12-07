@@ -9,7 +9,8 @@ export const Tabs = ({
     activeTabClassName,
     tabClassName,
     contentClassName,
-    predictButton
+    predictButton,
+    onChange
 }) => {
     const [active, setActive] = useState(propTabs[0]);
     const [tabs, setTabs] = useState(propTabs);
@@ -36,6 +37,7 @@ export const Tabs = ({
                         key={tab.title}
                         onClick={() => {
                             moveSelectedTabToTop(idx);
+                            onChange(tab.value);
                         }}
                         onMouseEnter={() => setHovering(true)}
                         onMouseLeave={() => setHovering(false)}
