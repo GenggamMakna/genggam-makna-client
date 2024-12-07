@@ -2,14 +2,15 @@
 
 import { useRouter } from "next/navigation"
 import { FileUpload } from "@/components/ui/file-upload";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { GetUserData } from "@/utilities/getUserData";
 import { toast } from "sonner";
 import { Tabs } from "@/components/ui/tabs";
+import { ArrowUpRight } from "@phosphor-icons/react";
 
 const Page = () => {
-    const user_data = GetUserData()
+    const [userData, setUserData] = useState({})
     const router = useRouter()
 
     const [files, setFiles] = useState([]);
@@ -21,6 +22,11 @@ const Page = () => {
     const handleError = (message) => {
         toast.error(message)
     }
+
+    useEffect(() => {
+        const user_data = GetUserData()
+        setUserData(user_data)
+    }, [])
 
     const tabs = [
         {
@@ -64,21 +70,28 @@ const Page = () => {
             <div className="h-[20rem] md:h-[40rem] [perspective:1000px] relative b flex flex-col max-w-5xl mx-auto w-full mt-4 items-start justify-start">
                 <Tabs
                     tabs={tabs}
-                    predictButton={(<HoverBorderGradient
-                        containerClassName="rounded-full"
-                        as="button"
-                        onClick={() => {
-                            if (user_data.id) {
-                                router.push("/predict")
-                            } else {
-                                router.push("/auth/login")
-                            }
-                        }
-                        }
-                        className="bg-blue-50 text-[#333333] flex items-center space-x-2 shadow-lg hover:scale-105 transition-all duration-400"
-                    >
-                        <span className="text-[#333333] font-acorn text-lg px-3" variant="light">Try Now </span>
-                    </HoverBorderGradient>)} />
+                    predictButton={userData.id ? (
+                        <HoverBorderGradient
+                            containerClassName="rounded-full"
+                            as="button"
+                            onClick={() => console.log("yes")}
+                            className="bg-blue-50 text-[#333333] flex items-center space-x-2 shadow-lg hover:scale-105 transition-all duration-400"
+                        >
+                            <span className="text-[#333333] font-acorn text-lg px-3" variant="light">Predict </span>
+                        </HoverBorderGradient>
+                    ) : (
+                        (
+                            <HoverBorderGradient
+                                containerClassName="rounded-full"
+                                as="button"
+                                onClick={() => router.push("/auth/login")}
+                                className="bg-blue-50 text-[#333333] flex items-center space-x-2 shadow-lg hover:scale-105 transition-all duration-400"
+                            >
+                                <span className="text-[#333333] font-acorn text-lg px-3" variant="light">Login to Start </span>
+                                <ArrowUpRight size={24} />
+                            </HoverBorderGradient>
+                        )
+                    )} />
             </div>
         </div>
     )
