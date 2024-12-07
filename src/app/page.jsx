@@ -20,7 +20,6 @@ const Page = () => {
               Genggam Makna
             </h1>
             <div className="mt-3 text-sm ">
-
               <h3>
                 Genggam Makna is an AI-powered platform designed to bridge communication gaps
               </h3>
@@ -30,7 +29,6 @@ const Page = () => {
               <h3>
                 Empowering accessibility and fostering inclusivity for a more connected world.
               </h3>
-
             </div>
           </div>
           <HoverBorderGradient
