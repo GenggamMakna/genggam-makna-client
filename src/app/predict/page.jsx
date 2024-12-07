@@ -33,6 +33,10 @@ const Page = () => {
         setUserData(user_data)
     }, [])
 
+    useEffect(() => {
+        setFiles([])
+    }, [currentType])
+
     const loadingStates = [
         { text: "Preparing for file upload" },
         { text: "Awaiting server response" },
@@ -56,16 +60,15 @@ const Page = () => {
         await new Promise(resolve => setTimeout(resolve, 100));
         setCurrentProgress(2)
         await new Promise(resolve => setTimeout(resolve, 100));
-        
+
         try {
             const res = await fetchWithAuth(BASE_API + `/predict/${currentType}`, {
                 method: "POST",
                 body: formData,
             })
             setCurrentProgress(3)
-            
+
             if (res.ok) {
-                await new Promise(resolve => setTimeout(resolve, 100));
                 setCurrentProgress(4)
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 const data = await res.json()
