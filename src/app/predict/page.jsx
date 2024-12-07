@@ -11,6 +11,15 @@ import { ArrowUpRight } from "@phosphor-icons/react";
 import fetchWithAuth from "@/utilities/fetchWithAuth";
 import { BASE_API } from "@/utilities/environment";
 import { MultiStepLoader } from "@/components/ui/multi-step-loader";
+import {
+    Modal,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    Button,
+    useDisclosure,
+} from "@nextui-org/react";
 
 const Page = () => {
     const [userData, setUserData] = useState({})
@@ -18,7 +27,10 @@ const Page = () => {
     const [files, setFiles] = useState([]);
     const [isLoading, setIsLoading] = useState(false)
     const [currentProgress, setCurrentProgress] = useState(0)
+    const [result, setResult] = useState({})
     const router = useRouter()
+
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const handleFileUpload = (files) => {
         setFiles(files);
@@ -70,9 +82,10 @@ const Page = () => {
 
             if (res.ok) {
                 setCurrentProgress(4)
-                await new Promise(resolve => setTimeout(resolve, 1000));
                 const data = await res.json()
-                console.log({ data })
+                setResult(data.body)
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                onOpen()
                 toast.success("Prediction successful!")
             } else {
                 toast.error("Something went wrong!")
@@ -161,6 +174,25 @@ const Page = () => {
                     )} />
             </div>
             <MultiStepLoader loadingStates={loadingStates} loading={isLoading} currentState={currentProgress} />
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1">Predict Result</ModalHeader>
+                            <ModalBody>
+                                <div className="font-semibold text-center text-4xl">
+                                    {result.predicted_alphabet}
+                                </div>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button className="bg-gradient-to-tl from-sky-300 to-sky-500 text-white" onPress={onClose}>
+                                    Close
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
         </div>
     )
 }
