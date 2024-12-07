@@ -10,16 +10,18 @@ import { Tabs } from "@/components/ui/tabs";
 import { ArrowUpRight } from "@phosphor-icons/react";
 import fetchWithAuth from "@/utilities/fetchWithAuth";
 import { BASE_API } from "@/utilities/environment";
+import { MultiStepLoader } from "@/components/ui/multi-step-loader";
 
 const Page = () => {
     const [userData, setUserData] = useState({})
     const [currentType, setCurrentType] = useState("image")
     const [files, setFiles] = useState([]);
+    const [isLoading, setIsLoading] = useState(false)
+    const [currentProgress, setCurrentProgress] = useState(0)
     const router = useRouter()
 
     const handleFileUpload = (files) => {
         setFiles(files);
-        console.log(files);
     };
 
     const handleError = (message) => {
@@ -31,21 +33,41 @@ const Page = () => {
         setUserData(user_data)
     }, [])
 
+    const loadingStates = [
+        { text: "Preparing for file upload" },
+        { text: "Awaiting server response" },
+        { text: "File is being uploaded" },
+        { text: "Processing SIBI prediction" },
+        { text: "SIBI prediction completed successfully" }
+    ];
+
     const handlePredict = async () => {
         if (!predictValidation()) {
             return
         }
 
+        setIsLoading(true)
+
         const formData = new FormData()
         formData.append(currentType, files)
 
+        await new Promise(resolve => setTimeout(resolve, 100));
+        setCurrentProgress(1)
+        await new Promise(resolve => setTimeout(resolve, 100));
+        setCurrentProgress(2)
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
         try {
             const res = await fetchWithAuth(BASE_API + `/predict/${currentType}`, {
                 method: "POST",
                 body: formData,
             })
-
+            setCurrentProgress(3)
+            
             if (res.ok) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                setCurrentProgress(4)
+                await new Promise(resolve => setTimeout(resolve, 1000));
                 const data = await res.json()
                 console.log({ data })
                 toast.success("Prediction successful!")
@@ -54,6 +76,9 @@ const Page = () => {
             }
         } catch (err) {
             toast.error("Connection error!")
+        } finally {
+            setCurrentProgress(0)
+            setIsLoading(false)
         }
     }
 
@@ -132,6 +157,7 @@ const Page = () => {
                         )
                     )} />
             </div>
+            <MultiStepLoader loadingStates={loadingStates} loading={isLoading} currentState={currentProgress} />
         </div>
     )
 }
