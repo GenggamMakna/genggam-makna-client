@@ -8,7 +8,8 @@ export const Tabs = ({
     containerClassName,
     activeTabClassName,
     tabClassName,
-    contentClassName
+    contentClassName,
+    predictButton
 }) => {
     const [active, setActive] = useState(propTabs[0]);
     const [tabs, setTabs] = useState(propTabs);
@@ -24,38 +25,41 @@ export const Tabs = ({
     const [hovering, setHovering] = useState(false);
 
     return (<>
-        <div
-            className={cn(
-                "flex flex-row items-center justify-start [perspective:1000px] relative overflow-auto sm:overflow-visible no-visible-scrollbar max-w-full gap-2 bg-gradient-to-tl from-sky-300 to-blue-400 w-max p-2 rounded-full font-acorn",
-                containerClassName
-            )}>
-            {propTabs.map((tab, idx) => (
-                <button
-                    key={tab.title}
-                    onClick={() => {
-                        moveSelectedTabToTop(idx);
-                    }}
-                    onMouseEnter={() => setHovering(true)}
-                    onMouseLeave={() => setHovering(false)}
-                    className={cn("relative px-3 py-1 rounded-full", tabClassName)}
-                    style={{
-                        transformStyle: "preserve-3d",
-                    }}>
-                    {active.value === tab.value && (
-                        <motion.div
-                            layoutId="clickedbutton"
-                            transition={{ type: "spring", bounce: 0.3, duration: 0.6 }}
-                            className={cn(
-                                "absolute inset-0 bg-blue-200 dark:bg-zinc-800 rounded-full ",
-                                activeTabClassName
-                            )} />
-                    )}
+        <div className="flex flex-row justify-between w-full items-center">
+            <div
+                className={cn(
+                    "flex flex-row items-center justify-start [perspective:1000px] relative overflow-auto sm:overflow-visible no-visible-scrollbar max-w-full gap-2 bg-gradient-to-tl from-sky-300 to-blue-400 w-max p-2 rounded-full font-acorn",
+                    containerClassName
+                )}>
+                {propTabs.map((tab, idx) => (
+                    <button
+                        key={tab.title}
+                        onClick={() => {
+                            moveSelectedTabToTop(idx);
+                        }}
+                        onMouseEnter={() => setHovering(true)}
+                        onMouseLeave={() => setHovering(false)}
+                        className={cn("relative px-3 py-1 rounded-full", tabClassName)}
+                        style={{
+                            transformStyle: "preserve-3d",
+                        }}>
+                        {active.value === tab.value && (
+                            <motion.div
+                                layoutId="clickedbutton"
+                                transition={{ type: "spring", bounce: 0.3, duration: 0.6 }}
+                                className={cn(
+                                    "absolute inset-0 bg-blue-200 dark:bg-zinc-800 rounded-full ",
+                                    activeTabClassName
+                                )} />
+                        )}
 
-                    <span className="relative block text-neutral-800">
-                        {tab.title}
-                    </span>
-                </button>
-            ))}
+                        <span className="relative block text-neutral-800">
+                            {tab.title}
+                        </span>
+                    </button>
+                ))}
+            </div>
+            {predictButton}
         </div>
         <FadeInDiv
             tabs={tabs}

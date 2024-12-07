@@ -62,24 +62,23 @@ const Page = () => {
                 </h3>
             </div>
             <div className="h-[20rem] md:h-[40rem] [perspective:1000px] relative b flex flex-col max-w-5xl mx-auto w-full mt-4 items-start justify-start">
-                <Tabs tabs={tabs} />
-            </div>
-            <div className="w-max mx-auto mt-4">
-                <HoverBorderGradient
-                    containerClassName="rounded-full"
-                    as="button"
-                    onClick={() => {
-                        if (user_data.id) {
-                            router.push("/predict")
-                        } else {
-                            router.push("/auth/login")
+                <Tabs
+                    tabs={tabs}
+                    predictButton={(<HoverBorderGradient
+                        containerClassName="rounded-full"
+                        as="button"
+                        onClick={() => {
+                            if (user_data.id) {
+                                router.push("/predict")
+                            } else {
+                                router.push("/auth/login")
+                            }
                         }
-                    }
-                    }
-                    className="bg-blue-50 text-[#333333] flex items-center space-x-2 shadow-lg hover:scale-105 transition-all duration-400"
-                >
-                    <span className="text-[#333333] font-acorn text-lg px-3" variant="light">Try Now </span>
-                </HoverBorderGradient>
+                        }
+                        className="bg-blue-50 text-[#333333] flex items-center space-x-2 shadow-lg hover:scale-105 transition-all duration-400"
+                    >
+                        <span className="text-[#333333] font-acorn text-lg px-3" variant="light">Try Now </span>
+                    </HoverBorderGradient>)} />
             </div>
         </div>
     )
