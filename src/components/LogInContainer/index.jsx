@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useGoogleLogin } from "@react-oauth/google";
 
 export function LogInContainer() {
     const router = useRouter()
@@ -74,6 +75,57 @@ export function LogInContainer() {
         return true;
     };
 
+    const handleGoogleLogin = useGoogleLogin({
+        onSuccess: async (tokenResponse) => {
+            try {
+                const userInfo = await fetch(
+                    `https://www.googleapis.com/oauth2/v3/userinfo`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${tokenResponse.access_token}`
+                        },
+                        method: "GET"
+                    }
+                );
+
+                if (userInfo.ok) {
+                    const data = await userInfo.json()
+
+                    const res = await fetch(BASE_API + "/auth/google/login", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            email: data.email,
+                            first_name: data.given_name,
+                            last_name: data.family_name,
+                            google_uid: data.sub
+                        }),
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    });
+
+                    if (res.ok) {
+                        const res_data = await res.json()
+
+                        Cookies.remove("token");
+                        Cookies.set("token", res_data.body, { expires: 7 });
+                        toast.success("Google login successful!");
+                        location.replace("/predict");
+                    } else {
+                        toast.error("Google login failed!");
+                    }
+                }
+
+            } catch (error) {
+                console.error(error);
+                toast.error("Failed to login with Google");
+            }
+        },
+        onError: (error) => {
+            toast.error("Google login failed");
+        }
+    });
+
     return (
         (<div
             className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 text-333 bg-transparent">
@@ -115,7 +167,9 @@ export function LogInContainer() {
                 <div className="flex flex-col space-y-4">
                     <button
                         className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-333 rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-                        type="submit">
+                        type="button"
+                        onClick={handleGoogleLogin}
+                    >
                         <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
                         <span className="text-neutral-700 dark:text-neutral-300 text-sm">
                             Google
