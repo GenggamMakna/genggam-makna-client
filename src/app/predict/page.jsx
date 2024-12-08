@@ -167,7 +167,8 @@ const Page = () => {
                                 onClick={() => router.push("/auth/login")}
                                 className="bg-blue-50 text-[#333333] flex items-center space-x-2 shadow-lg hover:scale-105 transition-all duration-400"
                             >
-                                <span className="text-[#333333] font-acorn text-lg px-3" variant="light">Login to Start </span>
+                                <span className="text-[#333333] font-acorn text-lg px-3 md:hidden block" variant="light">Login </span>
+                                <span className="text-[#333333] font-acorn text-lg px-3 md:block hidden" variant="light">Login to Start </span>
                                 <ArrowUpRight size={24} />
                             </HoverBorderGradient>
                         )
