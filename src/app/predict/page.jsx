@@ -138,8 +138,8 @@ const Page = () => {
 
     return (
         <div className="p-8 text-333">
-            <div className="w-max mx-auto">
-                <h1 className="font-acorn text-center text-5xl mt-10">
+            <div className="w-full sm:w-max mx-auto">
+                <h1 className="font-acorn text-center text-2xl msm:text-5xl sm:mt-10 mt-5">
                     Predict SIBI Hand Signs
                 </h1>
                 <h3 className="text-sm text-center">
