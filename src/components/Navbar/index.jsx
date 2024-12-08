@@ -1,12 +1,20 @@
 'use client'
 
-import { Image, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react"
-import { HandWaving, House, Info } from "@phosphor-icons/react"
+import {
+    Image,
+    Dropdown,
+    DropdownTrigger,
+    DropdownMenu,
+    DropdownItem,
+    Button,
+} from "@nextui-org/react"
+import { HandWaving, House, Info, List } from "@phosphor-icons/react"
 import { usePathname, useRouter } from "next/navigation"
 import { HoverBorderGradient } from "../ui/hover-border-gradient"
 import { GetUserData } from "@/utilities/getUserData"
 import { useEffect, useState } from "react"
 import Cookies from "js-cookie"
+import Link from "next/link"
 
 const Navbar = () => {
     const pathname = usePathname()
@@ -22,6 +30,24 @@ const Navbar = () => {
         Cookies.remove('token')
         location.replace("/")
     }
+
+    const menuItems = [
+        {
+            label: "Home",
+            icon: <House />,
+            href: "/",
+        },
+        {
+            label: "Predict",
+            icon: <HandWaving />,
+            href: "/predict",
+        },
+        {
+            label: "About",
+            icon: <Info />,
+            href: "/about",
+        },
+    ]
 
     const UserProfile = () => {
         return (
@@ -49,6 +75,30 @@ const Navbar = () => {
         )
     }
 
+    const BurgerMenu = () => {
+        return (
+            <Dropdown backdrop="blur">
+                <DropdownTrigger>
+                    <Button isIconOnly variant="light">
+                        <List size={32} color="#333333" />
+                    </Button>
+                </DropdownTrigger>
+                <DropdownMenu>
+                    {
+                        menuItems.map((menuItem, index) => (
+                            <DropdownItem key={index} as={Link} href={menuItem.href}>
+                                <div className="flex flex-row gap-2 items-center justify-start">
+
+                                    {menuItem.icon}{menuItem.label}
+                                </div>
+                            </DropdownItem>
+                        ))
+                    }
+                </DropdownMenu>
+            </Dropdown>
+        )
+    }
+
     const LogInButton = () => {
         return (
             <HoverBorderGradient
@@ -62,15 +112,20 @@ const Navbar = () => {
         )
     }
 
+
     return (
         <div className="flex flex-row justify-between items-center px-8 py-6">
+            <div className="sm:hidden">
+                <BurgerMenu />
+            </div>
             <Image
                 src="/logo/gm-light1.png"
                 isBlurred
                 width={170}
                 alt="GenggamMakna logo"
+                className="hidden sm:block"
             />
-            <div className="flex flex-row items-center gap-6">
+            <div className="hidden sm:flex flex-row items-center gap-6">
                 <House onClick={() => router.push("/")} color="#333333" size={32} weight={pathname.endsWith("/") ? "fill" : "thin"} className="hover:scale-105 cursor-pointer" />
                 <HandWaving onClick={() => router.push("/predict")} color="#333333" size={32} weight={pathname.endsWith("/predict") ? "fill" : "thin"} className="hover:scale-105 cursor-pointer" />
                 <Info onClick={() => router.push("/about")} color="#333333" size={32} weight={pathname.endsWith("/about") ? "fill" : "thin"} className="hover:scale-105 cursor-pointer" />
