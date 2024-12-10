@@ -26,14 +26,6 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
-# Modify environment.js file
-RUN sed -i "s|process.env.NEXT_PUBLIC_BASE_API_URL|'${NEXT_PUBLIC_BASE_API_URL}'|g" /app/src/utilities/environment.js \
-  && sed -i "s|process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID|'${NEXT_PUBLIC_GOOGLE_CLIENT_ID}'|g" /app/src/utilities/environment.js
-
-# Echo the modified environment.js file
-RUN echo "===== Content of environment.js =====" \
-  && cat /app/src/utilities/environment.js
-
 FROM base AS runner
 WORKDIR /app
 
@@ -53,6 +45,14 @@ ARG NEXT_PUBLIC_GOOGLE_CLIENT_ID
 # Set runtime ENV variables from ARG
 ENV NEXT_PUBLIC_BASE_API_URL=${NEXT_PUBLIC_BASE_API_URL}
 ENV NEXT_PUBLIC_GOOGLE_CLIENT_ID=${NEXT_PUBLIC_GOOGLE_CLIENT_ID}
+
+# Modify environment.js file
+RUN sed -i "s|process.env.NEXT_PUBLIC_BASE_API_URL|'${NEXT_PUBLIC_BASE_API_URL}'|g" /app/src/utilities/environment.js \
+  && sed -i "s|process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID|'${NEXT_PUBLIC_GOOGLE_CLIENT_ID}'|g" /app/src/utilities/environment.js
+
+# Echo the modified environment.js file
+RUN echo "===== Content of environment.js =====" \
+  && cat /app/src/utilities/environment.js
 
 # Print environment variables for debugging
 RUN echo "NEXT_PUBLIC_BASE_API_URL=${NEXT_PUBLIC_BASE_API_URL}"
