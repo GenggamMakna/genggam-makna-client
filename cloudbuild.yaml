@@ -3,7 +3,6 @@ steps:
     entrypoint: '/bin/sh'
     args:
       - '-c'
-      - '--no-cache'
       - |
         echo "DEBUG: _NEXT_PUBLIC_BASE_API_URL=${_NEXT_PUBLIC_BASE_API_URL}"
         echo "DEBUG: _NEXT_PUBLIC_GOOGLE_CLIENT_ID=${_NEXT_PUBLIC_GOOGLE_CLIENT_ID}"
