@@ -5,9 +5,9 @@ steps:
       - '-t'
       - 'gcr.io/$PROJECT_ID/genggam-makna-web-client:latest'
       - '--build-arg'
-      - '_NEXT_PUBLIC_BASE_API_URL=$_NEXT_PUBLIC_BASE_API_URL'
+      - 'NEXT_PUBLIC_BASE_API_URL=$_NEXT_PUBLIC_BASE_API_URL'
       - '--build-arg'
-      - '_NEXT_PUBLIC_GOOGLE_CLIENT_ID=$_NEXT_PUBLIC_GOOGLE_CLIENT_ID'
+      - 'NEXT_PUBLIC_GOOGLE_CLIENT_ID=$_NEXT_PUBLIC_GOOGLE_CLIENT_ID'
       - '.'
 
   - name: 'gcr.io/cloud-builders/docker'
