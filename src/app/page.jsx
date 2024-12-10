@@ -6,10 +6,16 @@ import { HoverBorderGradient } from "@/components/ui/hover-border-gradient"
 import { GetUserData } from "@/utilities/getUserData"
 import { ArrowUpRight } from "@phosphor-icons/react"
 import { useRouter } from "next/navigation"
+import {useEffect} from "react";
+import {BASE_API, GOOGLE_CLIENT_ID} from "@/utilities/environment";
 
 const Page = () => {
   const router = useRouter()
   const user_data = GetUserData()
+
+  useEffect(() => {
+    console.log(GOOGLE_CLIENT_ID, BASE_API)
+  }, []);
 
   return (
     <div className="w-full">
