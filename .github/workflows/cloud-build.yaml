@@ -1,0 +1,50 @@
+name: Cloud Build
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  cloud-build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Google Cloud CLI
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+          export_default_credentials: true
+
+      # Run Cloud Build
+      - name: Run Cloud Build
+        run: |
+          gcloud builds submit \
+            --substitutions=_NEXT_PUBLIC_BASE_API_URL=${{ secrets.NEXT_PUBLIC_BASE_API_URL }},_NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID }} \
+            --no-print-logs
+
+      # Deploy to Cloud Run
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy genggam-makna-web-client \
+            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/genggam-makna-web-client \
+            --region asia-southeast2 \
+            --platform managed \
+            --allow-unauthenticated 
+
+      # Notify on Success
+      - name: Send Success Notification
+        if: success()
+        run: |
+          echo "Deployment to Cloud Run was successful!"
+
+      # Notify on Failure
+      - name: Send Failure Notification
+        if: failure()
+        run: |
+          echo "Deployment failed. Check the logs for more details."
