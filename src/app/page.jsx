@@ -15,6 +15,7 @@ const Page = () => {
 
   useEffect(() => {
     console.log(GOOGLE_CLIENT_ID, BASE_API)
+    console.log(process.env)
   }, []);
 
   return (
