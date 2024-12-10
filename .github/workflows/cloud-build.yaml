@@ -1,3 +1,4 @@
+# cloud-build.yaml
 name: Cloud Build
 
 on:
@@ -33,6 +34,11 @@ jobs:
           # Mengaktifkan service account dengan key yang sudah disalin
           gcloud auth activate-service-account --key-file=/tmp/keyfile.json
           gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
+
+      # Aktifkan API Cloud Run
+      - name: Enable Cloud Run API
+        run: |
+          gcloud services enable run.googleapis.com
 
       # Jalankan Cloud Build
       - name: Run Cloud Build
