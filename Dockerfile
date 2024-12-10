@@ -28,6 +28,14 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
+# Modify environment.js file
+RUN sed -i 's|PLACEHOLDER_API_URL|'"${NEXT_PUBLIC_BASE_API_URL}"'|g' /src/utilities/environment.js \
+  && sed -i 's|PLACEHOLDER_GOOGLE_CLIENT_ID|'"${NEXT_PUBLIC_GOOGLE_CLIENT_ID}"'|g' /src/utilities/environment.js
+
+# Echo the modified environment.js file
+RUN echo "===== Content of environment.js =====" \
+  && cat /src/utilities/environment.js
+
 FROM base AS runner
 WORKDIR /app
 
@@ -37,7 +45,7 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./.
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # Define ARG for build-time variables
@@ -48,11 +56,6 @@ ARG NEXT_PUBLIC_GOOGLE_CLIENT_ID
 ENV NEXT_PUBLIC_BASE_API_URL=${NEXT_PUBLIC_BASE_API_URL}
 ENV NEXT_PUBLIC_GOOGLE_CLIENT_ID=${NEXT_PUBLIC_GOOGLE_CLIENT_ID}
 
-# Print environment variables for debugging
-RUN echo "NEXT_PUBLIC_BASE_API_URL=${NEXT_PUBLIC_BASE_API_URL}"
-RUN echo "NEXT_PUBLIC_GOOGLE_CLIENT_ID=${NEXT_PUBLIC_GOOGLE_CLIENT_ID}"
-
-ENV HOSTNAME="0.0.0.0"
 CMD ["node", "server.js"]
 
 EXPOSE 8080
