@@ -29,8 +29,8 @@ RUN \
   fi
 
 # Modify environment.js file
-RUN sed -i 's|PLACEHOLDER_API_URL|'"${NEXT_PUBLIC_BASE_API_URL}"'|g' /app/src/utilities/environment.js \
-  && sed -i 's|PLACEHOLDER_GOOGLE_CLIENT_ID|'"${NEXT_PUBLIC_GOOGLE_CLIENT_ID}"'|g' /app/src/utilities/environment.js
+RUN sed -i "s|process.env.NEXT_PUBLIC_BASE_API_URL|'${NEXT_PUBLIC_BASE_API_URL}'|g" /app/src/utilities/environment.js \
+  && sed -i "s|process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID|'${NEXT_PUBLIC_GOOGLE_CLIENT_ID}'|g" /app/src/utilities/environment.js
 
 # Echo the modified environment.js file
 RUN echo "===== Content of environment.js =====" \
