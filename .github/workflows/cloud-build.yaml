@@ -21,6 +21,13 @@ jobs:
           service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
           export_default_credentials: true
 
+      # Authenticate with gcloud using the service account key (optional but can help if automatic auth fails)
+      - name: Authenticate gcloud
+        run: |
+          echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" > /tmp/keyfile.json
+          gcloud auth activate-service-account --key-file /tmp/keyfile.json
+          gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
+
       # Run Cloud Build
       - name: Run Cloud Build
         run: |
