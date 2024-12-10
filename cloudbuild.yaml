@@ -1,4 +1,12 @@
 steps:
+  - name: 'alpine'
+    entrypoint: '/bin/sh'
+    args:
+      - '-c'
+      - |
+        echo "DEBUG: _NEXT_PUBLIC_BASE_API_URL=${_NEXT_PUBLIC_BASE_API_URL}"
+        echo "DEBUG: _NEXT_PUBLIC_GOOGLE_CLIENT_ID=${_NEXT_PUBLIC_GOOGLE_CLIENT_ID}"
+
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
@@ -9,12 +17,3 @@ steps:
       - '--build-arg'
       - 'NEXT_PUBLIC_GOOGLE_CLIENT_ID=$_NEXT_PUBLIC_GOOGLE_CLIENT_ID'
       - '.'
-
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'push'
-      - 'gcr.io/$PROJECT_ID/genggam-makna-web-client:latest'
-
-substitutions:
-  _NEXT_PUBLIC_BASE_API_URL: '${{ secrets.NEXT_PUBLIC_BASE_API_URL }}'
-  _NEXT_PUBLIC_GOOGLE_CLIENT_ID: '${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID }}'
