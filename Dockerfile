@@ -35,8 +35,8 @@ RUN echo "NEXT_PUBLIC_BASE_API_URL=${NEXT_PUBLIC_BASE_API_URL}"
 RUN echo "NEXT_PUBLIC_GOOGLE_CLIENT_ID=${NEXT_PUBLIC_GOOGLE_CLIENT_ID}"
 
 # Modify environment.js file
-RUN sed -i "s|process.env.NEXT_PUBLIC_BASE_API_URL|'${NEXT_PUBLIC_BASE_API_URL}'|g" /app/src/utilities/environment.js \
-  && sed -i "s|process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID|'${NEXT_PUBLIC_GOOGLE_CLIENT_ID}'|g" /app/src/utilities/environment.js
+RUN sed -i "s|process.env.NEXT_PUBLIC_BASE_API_URL|\"${NEXT_PUBLIC_BASE_API_URL}\"|g" /app/src/utilities/environment.js \
+  && sed -i "s|process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID|\"${NEXT_PUBLIC_GOOGLE_CLIENT_ID}\"|g" /app/src/utilities/environment.js
 
 # Echo the modified environment.js file
 RUN echo "===== Content of environment.js =====" \
@@ -60,6 +60,9 @@ RUN adduser --system --uid 1001 nextjs
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# Echo contents of /app
+RUN echo "===== List of files in /app =====" && ls -al /app/server/app/page.js
 
 ENV HOSTNAME="0.0.0.0"
 CMD ["node", "server.js"]
