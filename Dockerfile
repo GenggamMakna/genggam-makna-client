@@ -44,7 +44,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 ARG NEXT_PUBLIC_BASE_API_URL
 ARG NEXT_PUBLIC_GOOGLE_CLIENT_ID
 
-# Set runtime ENV variables
+# Set runtime ENV variables from ARG
 ENV NEXT_PUBLIC_BASE_API_URL=${NEXT_PUBLIC_BASE_API_URL}
 ENV NEXT_PUBLIC_GOOGLE_CLIENT_ID=${NEXT_PUBLIC_GOOGLE_CLIENT_ID}
 
