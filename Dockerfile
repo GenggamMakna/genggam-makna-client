@@ -62,7 +62,11 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # Echo contents of /app
-RUN echo "===== List of files in /app =====" && ls -al /app/server/app/page.js
+RUN echo "===== List of files in /app =====" && ls -al /app/.next/server/app
+
+# Echo the modified environment.js file
+RUN echo "===== Content of environment.js =====" \
+  && cat /app/.next/server/app/page.js
 
 ENV HOSTNAME="0.0.0.0"
 CMD ["node", "server.js"]
