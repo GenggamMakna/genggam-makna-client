@@ -52,7 +52,7 @@ jobs:
         run: |
           gcloud run deploy genggam-makna-web-client \
             --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/genggam-makna-web-client \
-            --region asia-southeast2 \
+            --region asia-southeast1 \
             --platform managed \
             --allow-unauthenticated 
 
