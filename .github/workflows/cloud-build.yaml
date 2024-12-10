@@ -25,10 +25,10 @@ jobs:
       - name: Authenticate gcloud
         run: |
           # Menyimpan key JSON dari GitHub Secrets ke dalam file sementara
-          echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" > /tmp/keyfile.json
+#          echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" > /tmp/keyfile.json
           
           # Mengaktifkan service account dengan key yang sudah disalin
-          gcloud auth activate-service-account --key-file=/tmp/keyfile.json
+          gcloud auth activate-service-account --key-file=${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
           gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
 
       # Jalankan Cloud Build
