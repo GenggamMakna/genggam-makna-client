@@ -1,7 +1,7 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
     args:
-      - build
+      - 'build'
       - '-t'
       - 'gcr.io/$PROJECT_ID/genggam-makna-web-client:$SHORT_SHA'
       - '--build-arg'
@@ -14,8 +14,10 @@ steps:
 
   # Push Docker image ke GCR
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/genggam-makna-web-client:$SHORT_SHA']
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/genggam-makna-web-client:$SHORT_SHA'
 
 substitutions:
-  _NEXT_PUBLIC_BASE_API_URL: 'dummy_value'
-  _NEXT_PUBLIC_GOOGLE_CLIENT_ID: 'dummy_value'
+  _NEXT_PUBLIC_BASE_API_URL: 'dummy_value'  # Ganti dengan nilai yang sesuai
+  _NEXT_PUBLIC_GOOGLE_CLIENT_ID: 'dummy_value'  # Ganti dengan nilai yang sesuai
