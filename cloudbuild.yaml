@@ -5,19 +5,16 @@ steps:
       - '-t'
       - 'gcr.io/$PROJECT_ID/genggam-makna-web-client:latest'
       - '--build-arg'
-      - 'NODE_ENV=production'
-      - '--build-arg'
       - 'NEXT_PUBLIC_BASE_API_URL=$_NEXT_PUBLIC_BASE_API_URL'
       - '--build-arg'
       - 'NEXT_PUBLIC_GOOGLE_CLIENT_ID=$_NEXT_PUBLIC_GOOGLE_CLIENT_ID'
       - '.'
 
-  # Push Docker image ke GCR
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
       - 'gcr.io/$PROJECT_ID/genggam-makna-web-client:latest'
 
 substitutions:
-  _NEXT_PUBLIC_BASE_API_URL: 'dummy_value'  # Ganti dengan nilai yang sesuai
-  _NEXT_PUBLIC_GOOGLE_CLIENT_ID: 'dummy_value'  # Ganti dengan nilai yang sesuai
+  _NEXT_PUBLIC_BASE_API_URL: '${{ secrets.NEXT_PUBLIC_BASE_API_URL }}'
+  _NEXT_PUBLIC_GOOGLE_CLIENT_ID: '${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID }}'
