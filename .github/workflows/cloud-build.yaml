@@ -24,7 +24,7 @@ jobs:
       # Autentikasi dengan gcloud menggunakan service account key
       - name: Authenticate gcloud
         run: |
-          echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" > /tmp/keyfile.json
+          echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" | jq . > /tmp/keyfile.json
           gcloud auth activate-service-account --key-file=/tmp/keyfile.json
           gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
 
