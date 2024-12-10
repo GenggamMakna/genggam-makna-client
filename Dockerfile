@@ -15,6 +15,18 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
+# Define ARG for build-time variables
+ARG NEXT_PUBLIC_BASE_API_URL
+ARG NEXT_PUBLIC_GOOGLE_CLIENT_ID
+
+# Set runtime ENV variables from ARG
+ENV NEXT_PUBLIC_BASE_API_URL=${NEXT_PUBLIC_BASE_API_URL}
+ENV NEXT_PUBLIC_GOOGLE_CLIENT_ID=${NEXT_PUBLIC_GOOGLE_CLIENT_ID}
+
+# Print environment variables for debugging
+RUN echo "NEXT_PUBLIC_BASE_API_URL=${NEXT_PUBLIC_BASE_API_URL}"
+RUN echo "NEXT_PUBLIC_GOOGLE_CLIENT_ID=${NEXT_PUBLIC_GOOGLE_CLIENT_ID}"
+
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
@@ -39,18 +51,6 @@ RUN adduser --system --uid 1001 nextjs
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-# Define ARG for build-time variables
-ARG NEXT_PUBLIC_BASE_API_URL
-ARG NEXT_PUBLIC_GOOGLE_CLIENT_ID
-
-# Set runtime ENV variables from ARG
-ENV NEXT_PUBLIC_BASE_API_URL=${NEXT_PUBLIC_BASE_API_URL}
-ENV NEXT_PUBLIC_GOOGLE_CLIENT_ID=${NEXT_PUBLIC_GOOGLE_CLIENT_ID}
-
-# Print environment variables for debugging
-RUN echo "NEXT_PUBLIC_BASE_API_URL=${NEXT_PUBLIC_BASE_API_URL}"
-RUN echo "NEXT_PUBLIC_GOOGLE_CLIENT_ID=${NEXT_PUBLIC_GOOGLE_CLIENT_ID}"
 
 ENV HOSTNAME="0.0.0.0"
 CMD ["node", "server.js"]
