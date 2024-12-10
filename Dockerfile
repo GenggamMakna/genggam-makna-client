@@ -61,6 +61,10 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# Echo contents of /app
+RUN echo "===== List of files in /app =====" && ls -al /app/.next
+RUN echo "===== List of files in /app =====" && ls -al /app/public
+
 ENV HOSTNAME="0.0.0.0"
 CMD ["node", "server.js"]
 
