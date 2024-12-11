@@ -42,6 +42,13 @@ RUN sed -i "s|process.env.NEXT_PUBLIC_BASE_API_URL|\"${NEXT_PUBLIC_BASE_API_URL}
 RUN echo "===== Content of environment.js =====" \
   && cat /app/src/utilities/environment.js
 
+# create .env file before building app
+RUN echo "NEXT_PUBLIC_BASE_API_URL=\"${NEXT_PUBLIC_BASE_API_URL}\"" > /app/.env
+RUN echo "NEXT_PUBLIC_GOOGLE_CLIENT_ID=\"${NEXT_PUBLIC_GOOGLE_CLIENT_ID}\"" >> /app/.env
+
+# show .env file
+RUN cat /app/.env
+
 RUN \
   if [ -f yarn.lock ]; then yarn run build; \
   elif [ -f package-lock.json ]; then npm run build; \
@@ -62,11 +69,11 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # Echo contents of /app
-RUN echo "===== List of files in /app =====" && ls -al /app/.next/server/app
+RUN echo "===== List of files in /app/.next/standalone =====" && ls -al /app/.next/standalone
 
 # Echo the modified environment.js file
-RUN echo "===== Content of environment.js =====" \
-  && cat /app/.next/server/app/page.js
+RUN echo "===== Content of page.js standalone =====" \
+  && cat /app/standalone/.next/server/app/page.js
 
 ENV HOSTNAME="0.0.0.0"
 CMD ["node", "server.js"]
