@@ -11,7 +11,7 @@ steps:
     args:
       - 'build'
       - '-t'
-      - 'gcr.io/asia-southeast2/$PROJECT_ID/genggam-makna-web-client:latest'
+      - 'gcr.io/asia-east1/$PROJECT_ID/genggam-makna-web-client:latest'
       - '--build-arg'
       - 'NEXT_PUBLIC_BASE_API_URL=$_NEXT_PUBLIC_BASE_API_URL'
       - '--build-arg'
@@ -21,4 +21,4 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
-      - 'gcr.io/asia-southeast2/$PROJECT_ID/genggam-makna-web-client:latest'
+      - 'gcr.io/asia-east1/$PROJECT_ID/genggam-makna-web-client:latest'

@@ -31,7 +31,7 @@ jobs:
       - name: Run Cloud Build
         run: |
           gcloud builds submit \
-            --region=asia-southeast2 \
+            --region=asia-east1 \
             --substitutions=_NEXT_PUBLIC_BASE_API_URL=${{ secrets.NEXT_PUBLIC_BASE_API_URL }},_NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID }} \
             --suppress-logs
 
