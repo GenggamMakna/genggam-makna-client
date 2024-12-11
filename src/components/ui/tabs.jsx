@@ -10,7 +10,8 @@ export const Tabs = ({
     tabClassName,
     contentClassName,
     predictButton,
-    onChange
+    onChange,
+    modelChangeToggle
 }) => {
     const [active, setActive] = useState(propTabs[0]);
     const [tabs, setTabs] = useState(propTabs);
@@ -60,6 +61,9 @@ export const Tabs = ({
                         </span>
                     </button>
                 ))}
+            </div>
+            <div className="w-max mx-auto hidden sm:block">
+                {modelChangeToggle}
             </div>
             {predictButton}
         </div>

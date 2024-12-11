@@ -7,7 +7,7 @@ import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { GetUserData } from "@/utilities/getUserData";
 import { toast } from "sonner";
 import { Tabs } from "@/components/ui/tabs";
-import { ArrowUpRight } from "@phosphor-icons/react";
+import { ArrowsClockwise, ArrowUpRight } from "@phosphor-icons/react";
 import fetchWithAuth from "@/utilities/fetchWithAuth";
 import { BASE_API } from "@/utilities/environment";
 import { MultiStepLoader } from "@/components/ui/multi-step-loader";
@@ -28,6 +28,7 @@ const Page = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [currentProgress, setCurrentProgress] = useState(0)
     const [result, setResult] = useState({})
+    const [modelType, setModelType] = useState("sibi")
     const router = useRouter()
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -74,7 +75,7 @@ const Page = () => {
         await new Promise(resolve => setTimeout(resolve, 100));
 
         try {
-            const res = await fetchWithAuth(BASE_API + `/predict/${currentType}`, {
+            const res = await fetchWithAuth(BASE_API + `/predict/${modelType}/${currentType}`, {
                 method: "POST",
                 body: formData,
             })
@@ -136,20 +137,38 @@ const Page = () => {
         },
     ];
 
+    const handleModelChange = () => {
+        modelType === "bisindo" ? setModelType("sibi") : setModelType("bisindo")
+    }
+
+    const ModelChangeToggle = () => {
+        return (
+            <Button className="bg-gradient-to-tl from-sky-300 to-blue-500 rounded-full text-sm font-semibold text-white" onClick={handleModelChange}>
+                <ArrowsClockwise size={24} color="#fff" />
+                {modelType === "sibi" ? "BISINDO" : "SIBI"}
+            </Button>
+        )
+    }
+
     return (
         <div className="p-8 text-333">
+            <button className="text-xs font-semibold text-333 flex flex-row gap-2 items-center sm:hidden" onClick={handleModelChange} variant="light">
+                <ArrowsClockwise size={24} color="#000" />
+                {modelType === "sibi" ? "BISINDO" : "SIBI"}
+            </button>
             <div className="w-full sm:w-max mx-auto">
                 <h1 className="font-acorn text-center text-2xl msm:text-5xl sm:mt-10 mt-5">
-                    Predict SIBI Hand Signs
+                    Predict <span className="uppercase" >{modelType}</span> Hand Signs
                 </h1>
                 <h3 className="text-sm text-center">
-                    Upload an image or video of SIBI hand signs to translate it into text.
+                    Upload an image or video of <span className="uppercase" >{modelType}</span> hand signs to translate it into text.
                 </h3>
             </div>
             <div className="h-[20rem] md:h-[40rem] [perspective:1000px] relative b flex flex-col max-w-5xl mx-auto w-full mt-4 items-start justify-start">
                 <Tabs
                     onChange={setCurrentType}
                     tabs={tabs}
+                    modelChangeToggle={<ModelChangeToggle />}
                     predictButton={userData.id ? (
                         <HoverBorderGradient
                             containerClassName="rounded-full"
