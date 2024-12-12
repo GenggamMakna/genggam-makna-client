@@ -45,7 +45,7 @@ jobs:
         run: |
           gcloud run deploy genggam-makna-web-client \
             --image asia-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/genggam-makna-web-client:latest \
-            --region asia-east1 \
+            --region asia-southeast1 \
             --platform managed \
             --allow-unauthenticated \
             --set-env-vars NEXT_PUBLIC_BASE_API_URL=${{ secrets.NEXT_PUBLIC_BASE_API_URL }},NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID }}
