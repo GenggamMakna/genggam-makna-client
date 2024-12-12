@@ -86,7 +86,7 @@ const Page = () => {
                         </Accordion>
                     </div>
                 </div>
-                <div className="space-y-6">
+                <div className="space-y-6 pb-[15vh]">
                     <h2 className="text-4xl sm:text-5xl text-333 font-acorn text-center">Meet Our Team</h2>
                     <FocusCards cards={cards} />
                 </div>
