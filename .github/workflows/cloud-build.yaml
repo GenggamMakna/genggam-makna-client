@@ -9,9 +9,11 @@ jobs:
   cloud-build:
     runs-on: ubuntu-latest
     steps:
+      # Step 1: Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Step 2: Set up gcloud
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v1
         with:
@@ -19,15 +21,18 @@ jobs:
           service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
           export_default_credentials: true
 
+      # Step 3: Authenticate gcloud
       - name: Authenticate gcloud
         run: |
           echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" | base64 --decode > /tmp/keyfile.json
           gcloud auth activate-service-account --key-file=/tmp/keyfile.json
           gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
 
+      # Step 4: Enable Cloud Run API
       - name: Enable Cloud Run API
         run: gcloud services enable run.googleapis.com
 
+      # Step 5: Run Cloud Build
       - name: Run Cloud Build
         run: |
           gcloud builds submit \
@@ -35,19 +40,22 @@ jobs:
             --substitutions=_NEXT_PUBLIC_BASE_API_URL=${{ secrets.NEXT_PUBLIC_BASE_API_URL }},_NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID }} \
             --suppress-logs
 
+      # Step 6: Deploy to Cloud Run
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy genggam-makna-web-client \
-            --image asia-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/genggam-makna-web-client:latest \ 
-            --region asia-southeast1 \
+            --image asia-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/genggam-makna-web-client:latest \
+            --region asia-east1 \
             --platform managed \
             --allow-unauthenticated \
             --set-env-vars NEXT_PUBLIC_BASE_API_URL=${{ secrets.NEXT_PUBLIC_BASE_API_URL }},NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID }}
 
+      # Step 7: Notify Success
       - name: Notify Success
         if: success()
         run: echo "Deployment to Cloud Run was successful!"
 
+      # Step 8: Notify Failure
       - name: Notify Failure
         if: failure()
         run: echo "Deployment failed. Check the logs for details."

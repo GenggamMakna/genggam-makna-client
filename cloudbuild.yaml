@@ -1,4 +1,5 @@
 steps:
+  # Step 1: Debugging Environment Variables
   - name: 'alpine'
     entrypoint: '/bin/sh'
     args:
@@ -7,18 +8,28 @@ steps:
         echo "DEBUG: _NEXT_PUBLIC_BASE_API_URL=${_NEXT_PUBLIC_BASE_API_URL}"
         echo "DEBUG: _NEXT_PUBLIC_GOOGLE_CLIENT_ID=${_NEXT_PUBLIC_GOOGLE_CLIENT_ID}"
 
-  - name: 'pkg.dev/cloud-builders/docker'
+  # Step 2: Build Docker Image
+  - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
       - '-t'
       - 'asia-east1-docker.pkg.dev/$PROJECT_ID/genggam-makna-web-client:latest'
       - '--build-arg'
-      - 'NEXT_PUBLIC_BASE_API_URL=$_NEXT_PUBLIC_BASE_API_URL'
+      - 'NEXT_PUBLIC_BASE_API_URL=${_NEXT_PUBLIC_BASE_API_URL}'
       - '--build-arg'
-      - 'NEXT_PUBLIC_GOOGLE_CLIENT_ID=$_NEXT_PUBLIC_GOOGLE_CLIENT_ID'
+      - 'NEXT_PUBLIC_GOOGLE_CLIENT_ID=${_NEXT_PUBLIC_GOOGLE_CLIENT_ID}'
       - '.'
 
-  - name: 'pkg.dev/cloud-builders/docker'
+  # Step 3: Push Docker Image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
       - 'asia-east1-docker.pkg.dev/$PROJECT_ID/genggam-makna-web-client:latest'
+
+timeout: 1200s # Optional: Set timeout to 20 minutes
+substitutions:
+  _NEXT_PUBLIC_BASE_API_URL: 'https://api.example.com'
+  _NEXT_PUBLIC_GOOGLE_CLIENT_ID: 'your-google-client-id'
+
+images:
+  - 'asia-east1-docker.pkg.dev/$PROJECT_ID/genggam-makna-web-client:latest'
