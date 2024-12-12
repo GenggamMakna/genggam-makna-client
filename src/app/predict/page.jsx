@@ -157,7 +157,7 @@ const Page = () => {
                 {modelType === "sibi" ? "BISINDO" : "SIBI"}
             </button>
             <div className="w-full sm:w-max mx-auto">
-                <h1 className="font-acorn text-center text-2xl msm:text-5xl sm:mt-10 mt-5">
+                <h1 className="font-acorn text-center text-2xl sm:text-5xl sm:mt-10 mt-5">
                     Predict <span className="uppercase" >{modelType}</span> Hand Signs
                 </h1>
                 <h3 className="text-sm text-center">
