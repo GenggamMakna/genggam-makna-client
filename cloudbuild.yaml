@@ -11,7 +11,7 @@ steps:
     args:
       - 'build'
       - '-t'
-      - 'pkg.dev/asia-east1/$PROJECT_ID/genggam-makna-web-client:latest'
+      - 'asia-east1-docker.pkg.dev/$PROJECT_ID/genggam-makna-web-client:latest'
       - '--build-arg'
       - 'NEXT_PUBLIC_BASE_API_URL=$_NEXT_PUBLIC_BASE_API_URL'
       - '--build-arg'
@@ -21,4 +21,4 @@ steps:
   - name: 'pkg.dev/cloud-builders/docker'
     args:
       - 'push'
-      - 'pkg.dev/asia-east1/$PROJECT_ID/genggam-makna-web-client:latest'
+      - 'asia-east1-docker.pkg.dev/$PROJECT_ID/genggam-makna-web-client:latest'

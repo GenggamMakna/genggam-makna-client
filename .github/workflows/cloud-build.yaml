@@ -38,7 +38,7 @@ jobs:
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy genggam-makna-web-client \
-            --image pkg.dev/asia-east1/${{ secrets.GCP_PROJECT_ID }}/genggam-makna-web-client:latest \ 
+            --image asia-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/genggam-makna-web-client:latest \ 
             --region asia-southeast1 \
             --platform managed \
             --allow-unauthenticated \
